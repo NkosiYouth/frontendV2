@@ -6,7 +6,7 @@ export default function NavMenu() {
   const menu = [
     {
       link: "/",
-      title: "Upload Files",
+      title: "Mercedes Upload Portal",
       icon: HiOutlineUpload,
     },
     {
