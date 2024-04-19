@@ -35,7 +35,8 @@ export default function ValidateProfiles() {
         return searchTerms.every(term =>
           profile.cohort.toLowerCase().includes(term) ||
           profile.first_name.toLowerCase().includes(term) ||
-          profile.last_name.toLowerCase().includes(term)
+          profile.last_name.toLowerCase().includes(term)||
+          profile.rsa_id_number.toLowerCase().includes(term)
         );
       });
 
