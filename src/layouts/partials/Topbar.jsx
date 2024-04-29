@@ -9,7 +9,7 @@ export default function Topbar() {
       borderBottomWidth={1}
     >
       <Heading as="h2" fontWeight="semibold">
-        Mercedes Upload Portal
+        Youth Uploader
       </Heading>
     </Box>
   );

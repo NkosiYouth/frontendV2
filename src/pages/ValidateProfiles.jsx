@@ -22,21 +22,20 @@ export default function ValidateProfiles() {
       // Fetch profiles based on isValidated only
       let result = await UserService.getAll({ isValidated: false });
       let filteredProfiles = result.data || [];
-  
+
       // Apply additional filters for cohort and searchQuery
       filteredProfiles = filteredProfiles.filter(profile => {
         // Check if cohort matches if filter is applied
         if (filter && profile.cohort !== filter) {
           return false; // Skip this profile if cohort doesn't match the filter
         }
-  
+
         // Check if any of the fields contain the search query
         const searchTerms = searchQuery.toLowerCase().trim().split(" ");
         return searchTerms.every(term =>
           profile.cohort.toLowerCase().includes(term) ||
           profile.first_name.toLowerCase().includes(term) ||
-          profile.last_name.toLowerCase().includes(term)||
-          profile.rsa_id_number.toLowerCase().includes(term)
+          profile.last_name.toLowerCase().includes(term)
         );
       });
 
@@ -63,9 +62,13 @@ export default function ValidateProfiles() {
     setSelectedProfile(undefined);
   }
 
-  const onUpdate = async (id, data) => {
+  const onUpdate = async (id, data, isValidated, isUpdated) => {
     try {
-      await UserService.updateById(id, Object.assign({}, data, {isValidated: true}));
+      let flags = {
+        isValidated,
+        isUpdated
+      };
+      await UserService.updateById(id, Object.assign({}, data, flags));
       setIsEditing(false);
       setLoading(true);
       loadData();
@@ -110,24 +113,21 @@ export default function ValidateProfiles() {
           />
         </Flex>
       </Flex>
-      <Stack spacing={4}>
-    <Text fontSize="md" color="gray">
-      {`Showing ${profiles.length} Unvalidated Profiles`}
-    </Text>
-    {loading ? (
-      <Flex justifyContent="center">
-        <Spinner />
-      </Flex>
-    ) : profiles.length > 0 ? (
-      profiles.map((item, i) => (
-        <ProfileItem key={i} item={item} onSelectProfile={onSelectProfile} />
-      ))
-    ) : (
-      <Text textAlign="center" color="gray">
-        No Profiles
-      </Text>
-    )}
-  </Stack>
+      {loading ? (
+        <Flex justifyContent="center">
+          <Spinner />
+        </Flex>
+      ) : profiles.length > 0 ? (
+        <Stack>
+          {profiles.map((item, i) => (
+            <ProfileItem key={i} item={item} onSelectProfile={onSelectProfile} />
+          ))}
+        </Stack>
+      ) : (
+        <Text textAlign="center" color="gray">
+          No Profiles
+        </Text>
+      )}
 
       {isEditing && (
         <ProfileItemModal
