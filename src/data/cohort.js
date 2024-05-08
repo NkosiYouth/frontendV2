@@ -5,6 +5,8 @@ export const COHORT = [
     "Anglo American Platinum P3",
     "Toyota P6",
     "Performanta P7",
+    "Environmental Resources Management South Africa Programme 7",
+    "Spirax Sarco South Africa (Pty) Ltd P2",
     "Mercedes Benz P4",
     "CSIR Program 3",
     "Abbott Rapid Diagnostics Y2",
