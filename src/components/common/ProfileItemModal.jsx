@@ -22,10 +22,10 @@ import { supervisor_name_options } from "../../data/supervisor";
 import { host_site_options } from "../../data/host_site";
 import AddSupervisorModal from "../supervisor/AddSupervisorModal";
 import AddHostModal from '../host/AddHostModal';
+import AddHostAddressModal from "../host/AddHostAddressModal";
 import SupervisorService from "../../services/SupervisorService";
 import HostService from "../../services/HostService";
 import HostAddressService from "../../services/HostAddressService";
-import AddHostAddressModal from "../host/AddHostAddressModal";
 
 const schemaKeys = [
   "cohort",
@@ -97,11 +97,13 @@ export default function ProfileItemModal({
       const valuesToUpdate = { ...values, disabled: values.disabled === "Yes" ? true : false };
       console.log(valuesToUpdate);
       const { _id, files, ...valuesToSave } = valuesToUpdate;
-      //Check if the data is validated
+      //Check ifthe data is validated
       let dataIsValidated = isValidated;
       let isUpdatedAndVerified = false;
       if (isValidated) {
-
+        // Add validation checks here
+        // ...
+        isUpdatedAndVerified = true;
       }
       onSave && onSave(data._id, valuesToSave, dataIsValidated, isUpdatedAndVerified);
     } catch (error) {
@@ -125,7 +127,6 @@ export default function ProfileItemModal({
     validationSchema: profileSchema,
     onSubmit: onHandleSubmit,
   });
-
 
   const fetchSupervisors = async () => {
     try {
@@ -207,7 +208,7 @@ export default function ProfileItemModal({
                             value={formik.values[key]}
                             onChange={(selectedOption) => formik.setFieldValue(key, selectedOption)}
                             options={options}
-                            touched={formik.touched[key]}
+                touched={formik.touched[key]}
                             errors={formik.errors[key]}
                             afterLabel={
                               <>
@@ -254,7 +255,7 @@ export default function ProfileItemModal({
                         Save Updates
                       </Button>
                       <Button
-                        type="submit"
+                        type="button" // Change this to 'button'
                         colorScheme="green"
                         p={6}
                         border={0}
@@ -263,6 +264,9 @@ export default function ProfileItemModal({
                         isLoading={isSubmitting}
                         loadingText="Validating..."
                         width={'100%'}
+                        onClick={() => {
+                          onHandleSubmit(formik.values);
+                        }}
                       >
                         Confirm & Verify
                       </Button>
