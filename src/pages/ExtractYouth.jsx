@@ -10,22 +10,41 @@ export default function ExtractYouth() {
 
   const handleExtract = async () => {
     try {
-      const response = await axios.post("/scripts/extract_youth", {
+      const response = await axios.post("/api/extract-youth", {  // Corrected URL
         cohort: selectedCohort,
         exportType,
       });
-
+  
       // Handle response (e.g., download file or display success message)
-      // ...
+      if (response.status === 200) {
+        // Handle success
+        toast({
+          description: response.data.message || "Data extraction successful!", // use message from backend if exists
+          status: "success",
+          isClosable: true,
+        });
+  
+        // If your backend returns a file download link, trigger the download here:
+        // const downloadUrl = response.data.downloadUrl;
+        // window.location.href = downloadUrl; 
+      } else {
+        toast({
+          description: response.data.error || "Failed to extract youth data.", // use error message from backend if exists
+          status: "error",
+          isClosable: true,
+        });
+      }
+  
     } catch (error) {
       toast({
-        description: "Failed to extract youth data.",
+        description: "An error occurred during extraction.",
         status: "error",
         isClosable: true,
       });
       console.error(error);
     }
   };
+  
 
   return (
     <Stack gap={6}>
