@@ -10,7 +10,7 @@ export default function ExtractYouth() {
 
   const handleExtract = async () => {
     try {
-      const response = await axios.post("/api/extract-youth", {  // Corrected URL
+      const response = await axios.post("/script/extract-youth", {  // Corrected URL
         cohort: selectedCohort,
         exportType,
       });
@@ -40,7 +40,7 @@ export default function ExtractYouth() {
         description: "An error occurred during extraction.",
         status: "error",
         isClosable: true,
-      });
+      });0
       console.error(error);
     }
   };
