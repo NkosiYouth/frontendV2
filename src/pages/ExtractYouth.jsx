@@ -10,7 +10,7 @@ export default function ExtractYouth() {
 
   const handleExtract = async () => {
     try {
-      const response = await axios.post("/api/extract-youth", {
+      const response = await axios.post("/scripts/extract_youth", {
         cohort: selectedCohort,
         exportType,
       });
