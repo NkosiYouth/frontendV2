@@ -1,7 +1,7 @@
 import { ChakraProvider } from "@chakra-ui/react";
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
 import { MainLayout } from "./layouts";
-import { UploadFiles, AllYouthData, ValidateProfiles, ExtractYouth } from "./pages";
+import { UploadFiles, AllYouthData, ValidateProfiles } from "./pages";
 
 function App() {
   const router = createBrowserRouter([
@@ -20,10 +20,6 @@ function App() {
         {
           path: "all-youth-data",
           element: <AllYouthData />,
-        },
-        {
-          path: "extract-youth",
-          element: <ExtractYouth />,
         },
       ],
     },
