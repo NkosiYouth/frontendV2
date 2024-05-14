@@ -1,6 +1,6 @@
 import { HStack, Icon, Link, Stack, Text } from "@chakra-ui/react";
 import { NavLink } from "react-router-dom";
-import { HiOutlineUpload, HiOutlineEye, HiOutlineUser } from "react-icons/hi";
+import { HiOutlineUpload, HiOutlineEye, HiOutlineUser, HiOutlineDownload } from "react-icons/hi";
 
 export default function NavMenu() {
   const menu = [
@@ -18,6 +18,11 @@ export default function NavMenu() {
       link: "/all-youth-data",
       title: "All Youth Data",
       icon: HiOutlineUser,
+    },
+    {
+      link: "/extract-youth",
+      title: "Extract Youth",
+      icon: HiOutlineDownload,
     },
   ];
 
