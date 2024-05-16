@@ -10,7 +10,7 @@ export default function ExtractYouth() {
 
   const handleExtract = async () => {
     try {
-      const response = await axios.post("https://backendv2-6iuv.onrender.com/api/", {  // Ensure this URL matches your backend
+      const response = await axios.post("https://backendv2-6iuv.onrender.com/", {  // Ensure this URL matches your backend
         cohort: selectedCohort,
         exportType,
       });
