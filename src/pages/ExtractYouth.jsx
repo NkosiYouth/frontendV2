@@ -10,16 +10,15 @@ export default function ExtractYouth() {
 
   const handleExtract = async () => {
     try {
-      const response = await axios.post("https://backendv2-6iuv.onrender.com/api/", {  // Corrected URL
+      const response = await axios.post("https://backendv2-6iuv.onrender.com/api/", {  // Ensure this URL matches your backend
         cohort: selectedCohort,
         exportType,
       });
   
       // Handle response (e.g., download file or display success message)
       if (response.status === 200) {
-        // Handle success
         toast({
-          description: response.data.message || "Data extraction successful!", // use message from backend if exists
+          description: response.data.message || "Data extraction successful!",
           status: "success",
           isClosable: true,
         });
@@ -29,7 +28,7 @@ export default function ExtractYouth() {
         // window.location.href = downloadUrl; 
       } else {
         toast({
-          description: response.data.error || "Failed to extract youth data.", // use error message from backend if exists
+          description: response.data.error || "Failed to extract youth data.",
           status: "error",
           isClosable: true,
         });
@@ -40,11 +39,10 @@ export default function ExtractYouth() {
         description: "An error occurred during extraction.",
         status: "error",
         isClosable: true,
-      });0
+      });
       console.error(error);
     }
   };
-  
 
   return (
     <Stack gap={6}>
