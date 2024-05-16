@@ -1,7 +1,7 @@
 import { Flex, Stack, Text, Select, Button, useToast } from "@chakra-ui/react";
 import React, { useState } from "react";
 import { COHORT } from "../data/cohort";
-import axios from "axios";
+import axios from "../utils/axios";
 
 export default function ExtractYouth() {
   const toast = useToast();
@@ -10,7 +10,7 @@ export default function ExtractYouth() {
 
   const handleExtract = async () => {
     try {
-      const response = await axios.post("https://backendv2-6iuv.onrender.com/", {  // Ensure this URL matches your backend
+      const response = await axios.post("https://backendv2-6iuv.onrender.com/api/", {  // Ensure this URL matches your backend
         cohort: selectedCohort,
         exportType,
       });
