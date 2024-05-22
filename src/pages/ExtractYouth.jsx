@@ -9,31 +9,38 @@ export default function ExtractYouth() {
   const [exportType, setExportType] = useState("1"); // Default to Export 1
 
   const handleExtract = async () => {
+    if (!selectedCohort ||!exportType) {
+      toast({
+        description: "Please select a cohort and export type.",
+        status: "error",
+        isClosable: true,
+      });
+      return;
+    }
+
     try {
-      const response = await axios.post("https://backendv2-6iuv.onrender.com/api/", {  // Ensure this URL matches your backend
+      const response = await axios.post("https://backendv2-6iuv.onrender.com/api/", {
         cohort: selectedCohort,
         exportType,
       });
-  
-      // Handle response (e.g., download file or display success message)
-      if (response.status === 200) {
-        toast({
-          description: response.data.message || "Data extraction successful!",
-          status: "success",
-          isClosable: true,
-        });
-  
-        // If your backend returns a file download link, trigger the download here:
-        // const downloadUrl = response.data.downloadUrl;
-        // window.location.href = downloadUrl; 
+
+      if (response.status === 200 && response.data) {
+        if (response.data.downloadUrl) {
+          window.location.href = response.data.downloadUrl;
+        } else {
+          toast({
+            description: response.data.message || "Data extraction successful!",
+            status: "success",
+            isClosable: true,
+          });
+        }
       } else {
         toast({
-          description: response.data.error || "Failed to extract youth data.",
+          description: `Error ${response.status}: ${response.statusText}`,
           status: "error",
           isClosable: true,
         });
       }
-  
     } catch (error) {
       toast({
         description: "An error occurred during extraction.",
