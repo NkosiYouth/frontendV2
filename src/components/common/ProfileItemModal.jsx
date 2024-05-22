@@ -89,36 +89,35 @@ export default function ProfileItemModal({
   const [hostAddressOptions, setHostAddressOptions] = useState([]);
 
   const onHandleSubmit = async (values, action) => {
-    console.log(values);
     setIsSubmitting(true);
     try {
-      // Convert "Yes" or "No" to true or false for MongoDB
       const valuesToUpdate = { ...values, disabled: values.disabled === "Yes" ? true : false };
-      console.log(valuesToUpdate);
       const { _id, files, ...valuesToSave } = valuesToUpdate;
-
+  
       let url;
+      let method;
       if (action === 'verify') {
         url = `/api/users/verify/${data._id}`;
+        method = 'POST';
       } else {
         url = `/api/users/${data._id}`;
+        method = 'PUT';
       }
-
+  
       const response = await fetch(url, {
-        method: action === 'verify' ? 'POST' : 'PUT',
+        method: method,
         headers: {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify(valuesToSave),
       });
-
+  
       if (!response.ok) {
-        const errorResponse = await response.json();
-        throw new Error(errorResponse.message || 'Network response was not ok');
+        const errorResponse = await response.text();
+        throw new Error(errorResponse || 'Network response was not ok');
       }
-
+  
       const result = await response.json();
-      console.log('Result:', result);
       toast({
         title: action === 'verify' ? 'Profile Verified' : 'Profile Updated',
         description: result.message,
@@ -126,7 +125,7 @@ export default function ProfileItemModal({
         duration: 5000,
         isClosable: true,
       });
-
+  
       if (onSave) {
         onSave(data._id, valuesToSave, isValidated, action === 'verify');
       }
@@ -141,7 +140,7 @@ export default function ProfileItemModal({
     } finally {
       setIsSubmitting(false);
     }
-  };
+  };  
 
   const formik = useFormik({
     initialValues: {
