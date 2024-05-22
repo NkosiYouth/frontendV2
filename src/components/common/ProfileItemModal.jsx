@@ -88,19 +88,18 @@ export default function ProfileItemModal({
   const [hostAddresses, setHostAddresses] = useState([]);
   const [hostAddressOptions, setHostAddressOptions] = useState([]);
 
-  const onHandleSubmit = async (values) => {
+  const onHandleSubmit = async (values, action) => {
     console.log(values);
-    return;
     setIsSubmitting(true);
     try {
       // Convert "Yes" or "No" to true or false for MongoDB
       const valuesToUpdate = { ...values, disabled: values.disabled === "Yes" ? true : false };
       console.log(valuesToUpdate);
       const { _id, files, ...valuesToSave } = valuesToUpdate;
-      //Check ifthe data is validated
+      // Check if the data is validated
       let dataIsValidated = isValidated;
       let isUpdatedAndVerified = false;
-      if (isValidated) {
+      if (action === 'verify') {
         // Add validation checks here
         // ...
         isUpdatedAndVerified = true;
@@ -125,7 +124,7 @@ export default function ProfileItemModal({
       ...data // Overwrite with passed data
     },
     validationSchema: profileSchema,
-    onSubmit: onHandleSubmit,
+    onSubmit: (values) => onHandleSubmit(values, 'save'),
   });
 
   const fetchSupervisors = async () => {
@@ -200,25 +199,23 @@ export default function ProfileItemModal({
 
                     if (dropdownOptions.hasOwnProperty(key)) {
                       return (
-                        <>
-                          <CSelect
-                            key={index}
-                            label={capitalizeFirstLetter(key.replace(/_/g, " "))}
-                            name={key}
-                            value={formik.values[key]}
-                            onChange={(selectedOption) => formik.setFieldValue(key, selectedOption)}
-                            options={options}
-                touched={formik.touched[key]}
-                            errors={formik.errors[key]}
-                            afterLabel={
-                              <>
-                                {key === 'supervisor' && <AddSupervisorModal loadData={fetchSupervisors} />}
-                                {key === 'host' && <AddHostModal loadData={fetchHosts} />}
-                                {key === 'host_address' && <AddHostAddressModal hostOptions={hostOptions} loadData={fetchHostAddresses} />}
-                              </>
-                            }
-                          />
-                        </>
+                        <CSelect
+                          key={index}
+                          label={capitalizeFirstLetter(key.replace(/_/g, " "))}
+                          name={key}
+                          value={formik.values[key]}
+                          onChange={(selectedOption) => formik.setFieldValue(key, selectedOption)}
+                          options={options}
+                          touched={formik.touched[key]}
+                          errors={formik.errors[key]}
+                          afterLabel={
+                            <>
+                              {key === 'supervisor' && <AddSupervisorModal loadData={fetchSupervisors} />}
+                              {key === 'host' && <AddHostModal loadData={fetchHosts} />}
+                              {key === 'host_address' && <AddHostAddressModal hostOptions={hostOptions} loadData={fetchHostAddresses} />}
+                            </>
+                          }
+                        />
                       );
                     } else {
                       return (
@@ -264,9 +261,7 @@ export default function ProfileItemModal({
                         isLoading={isSubmitting}
                         loadingText="Validating..."
                         width={'100%'}
-                        onClick={() => {
-                          onHandleSubmit(formik.values);
-                        }}
+                        onClick={() => onHandleSubmit(formik.values, 'verify')}
                       >
                         Confirm & Verify
                       </Button>
