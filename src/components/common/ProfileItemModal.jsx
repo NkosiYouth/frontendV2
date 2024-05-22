@@ -96,19 +96,44 @@ export default function ProfileItemModal({
       const valuesToUpdate = { ...values, disabled: values.disabled === "Yes" ? true : false };
       console.log(valuesToUpdate);
       const { _id, files, ...valuesToSave } = valuesToUpdate;
-      // Check if the data is validated
-      let dataIsValidated = isValidated;
-      let isUpdatedAndVerified = false;
+
+      let url;
       if (action === 'verify') {
-        // Add validation checks here
-        // ...
-        isUpdatedAndVerified = true;
+        url = `/api/users/verify/${data._id}`;
+      } else {
+        url = `/api/users/${data._id}`;
       }
-      onSave && onSave(data._id, valuesToSave, dataIsValidated, isUpdatedAndVerified);
+
+      const response = await fetch(url, {
+        method: action === 'verify' ? 'POST' : 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(valuesToSave),
+      });
+
+      if (!response.ok) {
+        const errorResponse = await response.json();
+        throw new Error(errorResponse.message || 'Network response was not ok');
+      }
+
+      const result = await response.json();
+      console.log('Result:', result);
+      toast({
+        title: action === 'verify' ? 'Profile Verified' : 'Profile Updated',
+        description: result.message,
+        status: 'success',
+        duration: 5000,
+        isClosable: true,
+      });
+
+      if (onSave) {
+        onSave(data._id, valuesToSave, isValidated, action === 'verify');
+      }
     } catch (error) {
       toast({
-        title: "Validation Error",
-        description: error.errors.join("\n"),
+        title: "Error",
+        description: error.message,
         status: "error",
         duration: 5000,
         isClosable: true,
@@ -252,7 +277,7 @@ export default function ProfileItemModal({
                         Save Updates
                       </Button>
                       <Button
-                        type="button" // Change this to 'button'
+                        type="button"
                         colorScheme="green"
                         p={6}
                         border={0}
