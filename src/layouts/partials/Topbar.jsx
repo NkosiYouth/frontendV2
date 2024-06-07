@@ -9,7 +9,7 @@ export default function Topbar() {
       borderBottomWidth={1}
     >
       <Heading as="h2" fontWeight="semibold">
-        Youth Uploader
+        Youth Uploader Machine 2
       </Heading>
     </Box>
   );
