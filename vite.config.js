@@ -5,6 +5,6 @@ import react from '@vitejs/plugin-react'
 export default defineConfig({
   plugins: [react()],
   define: {
-    BASE_URL: JSON.stringify('https://youthuploader-be.onrender.com/api/'), // Replace 'https://example.com' with your actual base URL
+    BASE_URL: JSON.stringify('https://backendv2-6iuv.onrender.com/api/'), // Replace 'https://example.com' with your actual base URL
   },
 })
